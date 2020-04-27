@@ -4,6 +4,7 @@ import re
 import requests
 from bs4 import BeautifulSoup
 import unicodedata
+import selenium
 
 
 def Act_WaitTranslation(int_sec = 5):
@@ -113,3 +114,49 @@ def fDf_htmlGetArray_Soup(str_url, bl_th = False, bl_waitForTranslation = False,
     return df
 
 
+
+
+class c_Selenium_InteractInternet():
+    # ----------------------------------------------------
+    # To use Chrome Driver
+    #  Go to chromedriver.chromium.org
+    #  download and UnZip the folder
+    #  Move it to Users/local/bin or C:\ProgramData\Anaconda3\Library\bin (Windows)
+    # ----------------------------------------------------
+    def __init__(self, str_url):
+        self.driver = selenium.webdriver.Chrome()
+        self.driver.get(str_url)
+        
+    def clic(self, str_buttonName, str_buttonxPath, l_buttonIfFailed):
+        # ----------------------------------------------------
+        # Right click on the button and chose Inspect
+        # Spot the button Type
+        # Right Click and Copy XPath, You get the XPATH
+        # ----------------------------------------------------
+        time.sleep(5)
+        btn_click = self.driver.find_element_by_xpath(str_buttonxPath)
+        if not str_buttonName.lower() in btn_click.text.lower():
+            print('Link found was not {} but: {}'.format(str_buttonName, btn_click.text))
+            for xPath in l_buttonIfFailed:
+                time.sleep(5)
+                btn_click = self.driver.find_element_by_xpath(xPath)
+                print('Link is: {}'.format(btn_click.text))
+                btn_click.click()
+        else:   btn_click.click()
+    
+    def fillUp(self, str_buttonxPath, str_textToFill):
+        time.sleep(2)
+        fld_toFill = self.driver.find_element_by_xpath(str_buttonxPath)
+        fld_toFill.send_keys(str_textToFill)
+    
+    def changeWindow(self, int_nbWindow):
+        self.baseWindow = self.driver.window_handles[0]
+        int_nbWindow = int_nbWindow % len(self.driver.window_handles)
+        self.newWindow = self.driver.window_handles[int_nbWindow]
+        self.driver.switch_to.window(self.newWindow)
+        
+    def changeWindowBack(self):
+        try:        self.driver.switch_to.window(self.baseWindow)
+        except:
+            print('Could not go back to Base Window... Wron use of changeWindowBack... Make sure u used changeWindow before')
+            self.driver.switch_to.window(self.driver.window_handles[0])

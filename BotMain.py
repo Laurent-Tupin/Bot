@@ -1,24 +1,60 @@
-# To use Chrome Driver
-#  Go to chromedriver.chromium.org
-#  download and UnZip the folder
-#  Move it to Users/local/bin or C:\ProgramData\Anaconda3\Library\bin (Windows)
+import time
+import pandas as pd
+import fct_html as html
 
 
-from selenium import webdriver
+def LaunchTinderBot():
+    # Open Page
+    try:
+        str_url = r'https://tinder.com'
+        bot = html.c_Selenium_InteractInternet(str_url)
+    except: return 'Error on Open Page'
+        
+    # Click to login facebook
+    try:
+        str_xPath = r'//*[@id="modal-manager"]/div/div/div/div/div[3]/span/div[2]/button'
+        l_clickXPathIfFailed = [r'//*[@id="modal-manager"]/div/div/div/div/div[3]/span/button'
+                                ,r'//*[@id="modal-manager"]/div/div/div/div/div[3]/span/div[3]/button']                        
+        bot.clic('facebook', str_xPath, l_clickXPathIfFailed)
+    except: return 'Error on Click to login facebook'
+        
+    # Login facebook
+    try:
+        bot.changeWindow(1)
+        str_path = r'C:\Users\Laurent.Tu\Documents\Apprendre Program\Python\Archive\Secret.csv'
+        df_uid = pd.read_csv(str_path, '\t')
+        str_uid = df_uid.loc[df_uid['Platform'] == 'facebook', 'Uid'].values[0]
+        str_pass = df_uid.loc[df_uid['Platform'] == 'facebook', 'Password'].values[0]
+        bot.fillUp(r'//*[@id="email"]', str_uid)
+        bot.fillUp(r'//*[@id="pass"]', str_pass)
+        bot.clic('', r'//*[@id="loginbutton"]', [])
+        bot.changeWindowBack()
+    except: return 'Error on login facebook'
+        
+    # pop-Up
+    try:
+        time.sleep(10)
+        bot.clic('', r'//*[@id="modal-manager"]/div/div/div/div/div[3]/button[1]', [])
+        bot.clic('', r'//*[@id="modal-manager"]/div/div/div/div/div[3]/button[1]', [])
+    except: print('Error on pop-Up')
+        
+    # LIKE in a Loop
+    try:
+        str_likeButton = '//*[@id="content"]/div/div[1]/div/main/div[1]/div/div/div[1]/div/div[2]/button[3]'
+        str_closePopUpButton = '//*[@id="modal-manager"]/div/div/div[2]/button[2]'
+        str_closeMatchButton = '//*[@id="modal-manager-canvas"]/div/div/div[1]/div/div[3]/a'
+        while True:
+            time.sleep(1)
+            try:        bot.clic(str_likeButton)
+            except:
+                time.sleep(1)
+                try:    bot.clic(str_closePopUpButton)
+                except: bot.clic(str_closeMatchButton)
+    except: return 'Error on LIKE in a Loop'
+    return True
 
-class TinderBot():
-    def __init__(self, str_url):
-        self.driver = webdriver.Chrome()
-        self.driver.get(str_url)
 
-
-str_url = r'https://tinder.com'
-bot = TinderBot(str_url)
-
-
-# Click
-
-
-
-# Fill Out
-
+v_TinderBot = LaunchTinderBot()
+print(v_TinderBot)
+    
+    
