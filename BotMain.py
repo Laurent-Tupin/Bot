@@ -35,12 +35,14 @@ class c_tinBot(html.c_Selenium_InteractInternet):
         except:     print('Error on 3')
         
     def like(self):
-        self.str_likeButton = r'//*[@id="content"]/div/div[1]/div/div/main/div/div[1]/div/div[2]/div[4]/button'
+        time.sleep(1)
+        self.str_likeButton = r'//*[@id="content"]/div/div[1]/div/main/div[1]/div/div/div[1]/div/div[2]/div[4]/button'
         super().clic('', self.str_likeButton, [])
         
     def closeMatchPopUp(self):
-        self.str_closePopUpButton = '//*[@id="modal-manager"]/div/div/div[2]/button[2]'
-        self.str_closeMatchButton = '//*[@id="modal-manager-canvas"]/div/div/div[1]/div/div[3]/a'
+        time.sleep(1)
+        self.str_closePopUpButton = r'//*[@id="modal-manager"]/div/div/div[2]/button[2]'
+        self.str_closeMatchButton = r'//*[@id="modal-manager-canvas"]/div/div/div[1]/div/div[3]/a'
         try:
             super().clic('', self.str_closePopUpButton, [])
             print('Just closed Pop-up after {} LIKE'.format(str(self.i_like)))
@@ -49,16 +51,15 @@ class c_tinBot(html.c_Selenium_InteractInternet):
             print('Just closed Match Pop-up after {} LIKE'.format(str(self.i_like)))
         
     def likeLoop(self):
+        time.sleep(30)
         self.i_compteur = 0
         self.i_like = 0
         for i in range(10000):
             self.i_compteur = i
-            time.sleep(1)
             try:
                 self.like()
                 self.i_like += 1
             except:
-                time.sleep(1)
                 self.closeMatchPopUp()
         print('Loop is over successfully after {} LIKES and {} on the compteur'.format(str(self.i_like), str(self.i_compteur)))
 
@@ -87,7 +88,7 @@ def LaunchTinBot():
     
     return bot, 'END'
 
-o_bot, str_returnMsg = LaunchTinBot()
+bot, str_returnMsg = LaunchTinBot()
 print(str_returnMsg)
     
     
