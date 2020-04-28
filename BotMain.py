@@ -22,36 +22,42 @@ def LaunchTinderBot():
     try:
         bot.changeWindow(1)
         str_path = r'C:\Users\Laurent.Tu\Documents\Apprendre Program\Python\Archive\Secret.csv'
-        df_uid = pd.read_csv(str_path, '\t')
+        df_uid = pd.read_csv(str_path)
         str_uid = df_uid.loc[df_uid['Platform'] == 'facebook', 'Uid'].values[0]
         str_pass = df_uid.loc[df_uid['Platform'] == 'facebook', 'Password'].values[0]
-        bot.fillUp(r'//*[@id="email"]', str_uid)
+        bot.fillUp(r'//*[@id="email"]', str_uid)        
         bot.fillUp(r'//*[@id="pass"]', str_pass)
         bot.clic('', r'//*[@id="loginbutton"]', [])
         bot.changeWindowBack()
     except: return 'Error on login facebook'
         
     # pop-Up
-    try:
-        time.sleep(10)
-        bot.clic('', r'//*[@id="modal-manager"]/div/div/div/div/div[3]/button[1]', [])
-        bot.clic('', r'//*[@id="modal-manager"]/div/div/div/div/div[3]/button[1]', [])
-    except: print('Error on pop-Up')
+    time.sleep(10)
+    try:        bot.clic('', r'//*[@id="content"]/div/div[2]/div/div/div[1]/button', [])
+    except:     print('Error on I accept cookies')
+    time.sleep(50)
+    try:        bot.clic('', r'//*[@id="modal-manager"]/div/div/div/div/div[3]/button[1]', [])
+    except:     print('Error on 1')
+    try:        bot.clic('', r'//*[@id="modal-manager"]/div/div/div/div/div[3]/button[1]', [])
+    except:     print('Error on 2')
+    try:        bot.clic('', r'//*[@id="modal-manager"]/div/div/div[2]/button[1]', [])
+    except:     print('Error on 3')
         
     # LIKE in a Loop
     try:
+        i_compteur = 0
         str_likeButton = '//*[@id="content"]/div/div[1]/div/main/div[1]/div/div/div[1]/div/div[2]/button[3]'
         str_closePopUpButton = '//*[@id="modal-manager"]/div/div/div[2]/button[2]'
         str_closeMatchButton = '//*[@id="modal-manager-canvas"]/div/div/div[1]/div/div[3]/a'
-        while True:
+        for i_compteur in range(10000):
             time.sleep(1)
             try:        bot.clic(str_likeButton)
             except:
                 time.sleep(1)
                 try:    bot.clic(str_closePopUpButton)
                 except: bot.clic(str_closeMatchButton)
-    except: return 'Error on LIKE in a Loop'
-    return True
+    except: return 'Error on LIKE in a Loop after {} profiles'.format(str(i_compteur))
+    return 'LIKE on {} profiles'.format(str(i_compteur))
 
 
 v_TinderBot = LaunchTinderBot()

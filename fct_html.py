@@ -145,7 +145,7 @@ class c_Selenium_InteractInternet():
         else:   btn_click.click()
     
     def fillUp(self, str_buttonxPath, str_textToFill):
-        time.sleep(2)
+        time.sleep(5)
         fld_toFill = self.driver.find_element_by_xpath(str_buttonxPath)
         fld_toFill.send_keys(str_textToFill)
     
