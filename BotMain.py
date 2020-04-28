@@ -55,12 +55,13 @@ class c_tinBot(html.c_Selenium_InteractInternet):
         self.i_compteur = 0
         self.i_like = 0
         for i in range(10000):
-            self.i_compteur = i
             try:
                 self.like()
                 self.i_like += 1
             except:
                 self.closeMatchPopUp()
+            finally:
+                self.i_compteur = i
         print('Loop is over successfully after {} LIKES and {} on the compteur'.format(str(self.i_like), str(self.i_compteur)))
 
 
