@@ -125,8 +125,11 @@ class c_Selenium_InteractInternet():
     # ----------------------------------------------------
     def __init__(self, str_url):
         self.driver = selenium.webdriver.Chrome()
-        self.driver.get(str_url)
-        
+        self.str_url = str_url
+    
+    def open(self):
+        self.driver.get(self.str_url)
+    
     def clic(self, str_buttonName, str_buttonxPath, l_buttonIfFailed):
         # ----------------------------------------------------
         # Right click on the button and chose Inspect
