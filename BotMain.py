@@ -3,6 +3,29 @@ import pandas as pd
 import fct_html as html
 
 
+#==============================================================
+# THEICE for Gold Price
+#==============================================================
+class c_botTheice(html.c_Selenium_InteractInternet):
+    def __init__(self):
+        self.str_url = r'https://www.theice.com/marketdata/reports/178'
+        super().__init__(self.str_url)
+        super().open()
+        
+    def clicCaptcha_Wait_Validate(self):
+        self.str_recaptchaAddress = r'//*[@id="recaptcha-anchor"]'      #"//span[@id='recaptcha-anchor']"
+        super().clicCaptcha(self.str_recaptchaAddress)
+        print('You will have 90 seconds in case you need to validate Images for Google')
+        time.sleep(90)
+        self.str_recaptchaValidate = r'//*[@id="reportCenterRecaptchaForm"]/input'
+        try:        super().clic('', self.str_recaptchaValidate, [])
+        except:     print('ERROR: Did you validate Manually ?')
+        
+        
+    
+#==============================================================
+# Tinder for fun example
+#==============================================================
 class c_tinBot(html.c_Selenium_InteractInternet):
     def __init__(self):
         self.str_url = r'https://tinder.com'
@@ -17,7 +40,7 @@ class c_tinBot(html.c_Selenium_InteractInternet):
         super().clic('facebook', self.str_xPath, self.l_clickXPathIfFailed)
         # Login facebook
         super().changeWindow(1)
-        super().fillUp(r'//*[@id="email"]', str_uid)        
+        super().fillUp(r'//*[@id="email"]', str_uid)
         super().fillUp(r'//*[@id="pass"]', str_pass)
         super().clic('', r'//*[@id="loginbutton"]', [])
         super().changeWindowBack()
@@ -65,6 +88,21 @@ class c_tinBot(html.c_Selenium_InteractInternet):
         print('Loop is over successfully after {} LIKES and {} on the compteur'.format(str(self.i_like), str(self.i_compteur)))
 
 
+#==============================================================
+# Function to launch
+#==============================================================
+def LaunchTheiceBot():
+    # Open Page
+    try:        bot = c_botTheice()
+    except:     return None, 'Error on Open Page'
+    
+    # CLick on Captcha
+#    try:        bot.clicCaptcha_Wait_Validate()
+#    except:     return bot, 'Error on CLick on Captcha'
+        
+    return bot, 'END'
+
+        
 def LaunchTinBot():
     # Open Page
     try:        bot = c_tinBot()
@@ -89,7 +127,21 @@ def LaunchTinBot():
     
     return bot, 'END'
 
-bot, str_returnMsg = LaunchTinBot()
+#bot, str_returnMsg = LaunchTinBot()
+#print(str_returnMsg)
+    
+bot, str_returnMsg = LaunchTheiceBot()
 print(str_returnMsg)
-    
-    
+
+
+
+#a = bot.driver.find_element_by_xpath('//*[@id="sessionNumber_chosen"]')
+#a.send_keys('Afternoon Auction')
+
+
+
+
+
+
+
+

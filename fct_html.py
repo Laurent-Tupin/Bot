@@ -5,6 +5,9 @@ import requests
 from bs4 import BeautifulSoup
 import unicodedata
 import selenium
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 
 
 def Act_WaitTranslation(int_sec = 5):
@@ -154,7 +157,8 @@ class c_Selenium_InteractInternet():
     
     def changeWindow(self, int_nbWindow):
         self.baseWindow = self.driver.window_handles[0]
-        int_nbWindow = int_nbWindow % len(self.driver.window_handles)
+        self.int_nbWindowsTotal = len(self.driver.window_handles)
+        int_nbWindow = int_nbWindow % self.int_nbWindowsTotal
         self.newWindow = self.driver.window_handles[int_nbWindow]
         self.driver.switch_to.window(self.newWindow)
         
@@ -163,3 +167,12 @@ class c_Selenium_InteractInternet():
         except:
             print('Could not go back to Base Window... Wron use of changeWindowBack... Make sure u used changeWindow before')
             self.driver.switch_to.window(self.driver.window_handles[0])
+    
+    def clicCaptcha(self, str_recaptcha):
+        self.str_recaptcha = str_recaptcha
+        WebDriverWait(self.driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.CSS_SELECTOR,
+                     "iframe[name^='a-'][src^='https://www.google.com/recaptcha/api2/anchor?']")))
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, self.str_recaptcha))).click()
+        
+        
+        
