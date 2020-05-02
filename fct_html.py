@@ -10,16 +10,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
 
-def Act_WaitTranslation(int_sec = 5):
-    print('  * Wait for Translation {} secondes ...'.format(str(int_sec)))
-    time.sleep(int_sec)
-
-def fBl_ChineseInString(str_stringToTest):
-    l_result = re.findall(r'[\u4e00-\u9fff]+', str_stringToTest)
-    if l_result:    return True
-    return False
-
-
+#------------------------------------------------------------------------------
+# Check Connexion
+#------------------------------------------------------------------------------
 def fBL_checkConnexion(o_page):
     try: 
         if o_page.status_code == 200: 
@@ -30,8 +23,24 @@ def fBL_checkConnexion(o_page):
     except: 
         print('  ERROR in fBL_checkConnexion: Connexion fails because the input is not a page')
     return False
-    
 
+
+#------------------------------------------------------------------------------
+# Function to check parameters
+#------------------------------------------------------------------------------
+def Act_WaitTranslation(int_sec = 5):
+    print('  * Wait for Translation {} secondes ...'.format(str(int_sec)))
+    time.sleep(int_sec)
+
+def fBl_ChineseInString(str_stringToTest):
+    l_result = re.findall(r'[\u4e00-\u9fff]+', str_stringToTest)
+    if l_result:    return True
+    return False
+
+
+#------------------------------------------------------------------------------
+# Entrance/Main Function
+#------------------------------------------------------------------------------
 def fDf_htmlGetArray_json(str_url, str_jsonCriteria = ""):
     try:
         o_page = requests.get(str_url)
@@ -52,8 +61,6 @@ def fDf_htmlGetArray_json(str_url, str_jsonCriteria = ""):
         print(' - ', str_jsonCriteria)
         raise
     return df
-
-
 
 
 def fDf_htmlGetArray_Soup(str_url, bl_th = False, bl_waitForTranslation = False, int_waitTime = 1, bl_cleanXA0 = True):  
@@ -118,7 +125,9 @@ def fDf_htmlGetArray_Soup(str_url, bl_th = False, bl_waitForTranslation = False,
 
 
 
-
+#------------------------------------------------------------------------------
+# Class Selenium
+#------------------------------------------------------------------------------
 class c_Selenium_InteractInternet():
     # ----------------------------------------------------
     # To use Chrome Driver

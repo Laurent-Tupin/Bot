@@ -20,9 +20,20 @@ class c_botTheice(html.c_Selenium_InteractInternet):
         self.str_recaptchaValidate = r'//*[@id="reportCenterRecaptchaForm"]/input'
         try:        super().clic('', self.str_recaptchaValidate, [])
         except:     print('ERROR: Did you validate Manually ?')
-        
-        
+
+# Function to launch        
+def LaunchTheiceBot():
+    # Open Page
+    try:        bot = c_botTheice()
+    except:     return None, 'Error on Open Page'
     
+    # CLick on Captcha
+    try:        bot.clicCaptcha_Wait_Validate()
+    except:     return bot, 'Error on CLick on Captcha'
+    
+    return bot, 'END'
+
+
 #==============================================================
 # Tinder for fun example
 #==============================================================
@@ -48,14 +59,14 @@ class c_tinBot(html.c_Selenium_InteractInternet):
     def clearPopUpAfterId(self):
         time.sleep(10)
         try:        super().clic('', r'//*[@id="content"]/div/div[2]/div/div/div[1]/button', [])
-        except:     print('Error on I accept cookies')
+        except:     print('Not FOUND on I accept cookies')
         time.sleep(30)
         try:        super().clic('', r'//*[@id="modal-manager"]/div/div/div/div/div[3]/button[1]', [])
-        except:     print('Error on 1 ALLOW Location')
+        except:     print('Not FOUND on 1 ALLOW Location')
         try:        super().clic('', r'//*[@id="modal-manager"]/div/div/div/div/div[3]/button[1]', [])
-        except:     print('Error on 2 Enable Notifications')
+        except:     print('Not FOUND on 2 Enable Notifications')
         try:        super().clic('', r'//*[@id="modal-manager"]/div/div/div[2]/button[1]', [])
-        except:     print('Error on 3')
+        except:     print('Not FOUND on 3')
         
     def like(self):
         time.sleep(1)
@@ -85,24 +96,9 @@ class c_tinBot(html.c_Selenium_InteractInternet):
                 self.closeMatchPopUp()
             finally:
                 self.i_compteur = i
-        print('Loop is over successfully after {} LIKES and {} on the compteur'.format(str(self.i_like), str(self.i_compteur)))
+        print('Loop is over successfully after {} LIKES and {} on the loop'.format(str(self.i_like), str(self.i_compteur)))
 
-
-#==============================================================
 # Function to launch
-#==============================================================
-def LaunchTheiceBot():
-    # Open Page
-    try:        bot = c_botTheice()
-    except:     return None, 'Error on Open Page'
-    
-    # CLick on Captcha
-#    try:        bot.clicCaptcha_Wait_Validate()
-#    except:     return bot, 'Error on CLick on Captcha'
-        
-    return bot, 'END'
-
-        
 def LaunchTinBot():
     # Open Page
     try:        bot = c_tinBot()
@@ -122,19 +118,24 @@ def LaunchTinBot():
     bot.clearPopUpAfterId()
     
     # Like Loop
-    try:    bot.likeLoop()
-    except: print('ERROR Loop is over after {} LIKES and {} on the compteur'.format(str(bot.i_like), str(bot.i_compteur)))
+    try:        bot.likeLoop()
+    except: 
+        print('ERROR Loop is over after {} LIKES and {} on the loop'.format(str(bot.i_like), str(bot.i_compteur)))
+#        bot.driver.close()
     
     return bot, 'END'
 
-#bot, str_returnMsg = LaunchTinBot()
-#print(str_returnMsg)
-    
-bot, str_returnMsg = LaunchTheiceBot()
+
+
+#==============================================================
+# Function to launch
+#==============================================================
+bot, str_returnMsg = LaunchTinBot()
 print(str_returnMsg)
 
 
-
+#bot, str_returnMsg = LaunchTheiceBot()
+#print(str_returnMsg)
 #a = bot.driver.find_element_by_xpath('//*[@id="sessionNumber_chosen"]')
 #a.send_keys('Afternoon Auction')
 
