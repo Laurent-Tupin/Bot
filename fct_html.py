@@ -38,6 +38,8 @@ def fBl_ChineseInString(str_stringToTest):
     return False
 
 
+
+
 #------------------------------------------------------------------------------
 # Entrance/Main Function
 #------------------------------------------------------------------------------
@@ -128,10 +130,10 @@ def fDf_htmlGetArray_Soup(str_url, bl_th = False, bl_waitForTranslation = False,
 #------------------------------------------------------------------------------
 # Class Selenium
 #------------------------------------------------------------------------------
-class c_Selenium_InteractInternet():
+class c_selenium_chrome():
     # ----------------------------------------------------
     # To use Chrome Driver
-    #  Go to chromedriver.chromium.org
+    #  https://chromedriver.chromium.org/
     #  download and UnZip the folder
     #  Move it to Users/local/bin or C:\ProgramData\Anaconda3\Library\bin (Windows)
     # ----------------------------------------------------
@@ -150,19 +152,20 @@ class c_Selenium_InteractInternet():
         # ----------------------------------------------------
         time.sleep(5)
         btn_click = self.driver.find_element_by_xpath(str_buttonxPath)
-        if not str_buttonName.lower() in btn_click.text.lower():
+        if str_buttonName.lower() in btn_click.text.lower():
+            btn_click.click()
+        else:
             print('Link found was not {} but: {}'.format(str_buttonName, btn_click.text))
             for xPath in l_buttonIfFailed:
                 time.sleep(5)
                 btn_click = self.driver.find_element_by_xpath(xPath)
                 print('Link is: {}'.format(btn_click.text))
-                btn_click.click()
-        else:   btn_click.click()
+                btn_click.click() 
     
     def fillUp(self, str_buttonxPath, str_textToFill):
         time.sleep(5)
-        fld_toFill = self.driver.find_element_by_xpath(str_buttonxPath)
-        fld_toFill.send_keys(str_textToFill)
+        Area_toFill = self.driver.find_element_by_xpath(str_buttonxPath)
+        Area_toFill.send_keys(str_textToFill)
     
     def changeWindow(self, int_nbWindow):
         self.baseWindow = self.driver.window_handles[0]
@@ -183,5 +186,5 @@ class c_Selenium_InteractInternet():
                      "iframe[name^='a-'][src^='https://www.google.com/recaptcha/api2/anchor?']")))
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, self.str_recaptcha))).click()
         
-        
-        
+
+
