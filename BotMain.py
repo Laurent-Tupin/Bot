@@ -45,6 +45,9 @@ class c_tinBot(html.c_selenium_chrome):
         
     def loginFacebook(self, str_uid, str_pass):
         try:
+            self.str_xPath = r'//*[@id="content"]/div/div[1]/div/main/div[1]/div/div/header/div[1]/div[2]/div/button'
+            self.clic('login', self.str_xPath)
+            
             # Click to login facebook
             self.str_xPath = r'//*[@id="modal-manager"]/div/div/div/div/div[3]/span/div[2]/button'
             self.l_clickXPathIfFailed = [r'//*[@id="modal-manager"]/div/div/div/div/div[3]/span/button'
